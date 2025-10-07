@@ -34,8 +34,31 @@ contract HelloWorld {
     //到这里的目标是完成调用say函数时候修改strVar，并在后面加上from Orion的叙述
     //而且在修改strVar变量后再次调用say函数依旧显示
 
-    //pure关键字类似view关键字表示我在这个函数里只会对变量进行运算
-    //而不会对状态进行修改
-    
-    //这里用到了string的concat方法，对字符串进行连接
+    // pure关键字类似view关键字表示我在这个函数里只会对变量进行运算，不会对状态进行修改
+
+    // 这里用到了string的concat方法，对字符串进行连接
+
+    //【2025.10.7更新】view和pure的区别
+    // 来源：https://blog.csdn.net/zyq55917/article/details/124428142
+    // Solidity 语言有两类和状态读写有关的函数类型，一类是 view 函数（也称为视图函数），另一类是 pure 函数（也称为纯函数）
+    // 他们的区别是 view 函数不修改状态，pure 函数即不修改状态也不读取状态
+    // 下面的语句被认为是在修改状态：
+    /* 1.修改状态变量；
+       2.触发事件；
+       3.创建其他合约；
+       4.使用 selfdestruct；
+       5.通过调用发送以太币；
+       6.调用任何未标记 view 或 pure 的函数；
+       7.使用低级调用；
+       8.使用包含某些操作码的内联汇编。*/
+    // 下面的语句被认为是读取状态的：
+    /* 1.从状态变量中读取；
+       2.访问 address(this).balance 或 address.balance；
+       3.访问 block, tx, msg 的任何成员(除了 msg.sig 和 msg.data)；
+       4.调用任何未标记为 pure 的函数；
+       5.使用包含某些操作码的内联汇编。*/
+    // 个人见解：view > pure 即pure要求更为严格
+    // 经过测试此处addinfo，从pure改成view会报黄色警告，但代码仍能运行
+    // 而众筹合约的view函数改为pure则会报红色警告，代码无法运行
+
 }
